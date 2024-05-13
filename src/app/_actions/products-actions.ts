@@ -24,7 +24,7 @@ export const usingGetAllProductsQuery = action(EmptySchema, async () => {
     const data = await response.json();
 
     // we return the typed data:
-    return data as ProductType;
+    return data.products as ProductType[];
   } catch (error) {
     console.error("Failed to fetch products.", error);
     throw error;

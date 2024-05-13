@@ -14,8 +14,14 @@ export const UserSchema = z.object({
 export type UserType = z.infer<typeof UserSchema>;
 
 export const LoginSchema = z.object({
-  username: z.string(),
-  password: z.string(),
+  username: z
+    .string()
+    .min(1, { message: "Username is required." }) // Ensure the username field is not empty
+    .max(100, { message: "Username must be 100 characters or less." }), // limit the maximum length of the username
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long." }) // Set minimum length for password
+    .max(100, { message: "Password must be 100 characters or less." }), // limit the maximum length of the password
 });
 
 export type LoginType = z.infer<typeof LoginSchema>;

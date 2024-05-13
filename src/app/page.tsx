@@ -1,5 +1,7 @@
+import { Login } from "./(auth)/login/page";
+import Shop from "./(shopping)/shop/page";
 import { usingLoginMutation } from "./_actions/auth-actions";
-import Products from "./products/page";
+import { usingGetAllProductsQuery } from "./_actions/products-actions";
 
 export default async function Home() {
   const user = await usingLoginMutation({ username: "kminchelle", password: "0lelplR" });
@@ -7,8 +9,9 @@ export default async function Home() {
   // await useGetProductByIdQuery({ value: "1" });
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Products />
+    <main className="min-h-screen min-w-screen">
+      {/* <Login /> */}
+      <Shop />
     </main>
   );
 }

@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ShopStoreProvider } from "@/providers/store-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-        <ShopStoreProvider>{children}</ShopStoreProvider>
+        <ShopStoreProvider>
+          {children}
+          <Toaster richColors position="bottom-center" />
+        </ShopStoreProvider>
       </body>
     </html>
   );

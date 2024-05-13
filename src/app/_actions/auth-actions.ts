@@ -33,10 +33,10 @@ export const usingLoginMutation = action(LoginSchema, async ({ username, passwor
     // console.log("User logged in:", user);
 
     // save the session to server-only cookies:
-    const session = await getIronSessionData();
-    session.id = user.id;
-    session.token = user.token;
-    await session.save();
+    // const session = await getIronSessionData();
+    // session.id = user.id;
+    // session.token = user.token;
+    // await session.save();
 
     // we return the typed data:
     return user;
