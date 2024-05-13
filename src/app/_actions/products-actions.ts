@@ -6,7 +6,7 @@ import { EmptySchema, StringValueSchema } from "@/lib/types/shared-types";
 import { PRODUCTS_ENDPOINTS } from "@/lib/api-endpoints/products/products-endpoints";
 import { ProductType } from "@/lib/types/products-types";
 
-export const useGetAllProductsQuery = action(EmptySchema, async () => {
+export const usingGetAllProductsQuery = action(EmptySchema, async () => {
   const endpoint = `${PRODUCTS_ENDPOINTS.GET.GET_ALL_PRODUCTS}`;
 
   try {
@@ -31,7 +31,7 @@ export const useGetAllProductsQuery = action(EmptySchema, async () => {
   }
 });
 
-export const useGetProductByIdQuery = action(StringValueSchema, async ({ value }) => {
+export const usingGetProductByIdQuery = action(StringValueSchema, async ({ value }) => {
   const endpoint = `${PRODUCTS_ENDPOINTS.GET.GET_PRODUCT_BY_ID.replace(":id", value)}`;
 
   try {
@@ -52,7 +52,7 @@ export const useGetProductByIdQuery = action(StringValueSchema, async ({ value }
   }
 });
 
-export const useSearchProductsQuery = action(StringValueSchema, async ({ value }) => {
+export const usingSearchProductsQuery = action(StringValueSchema, async ({ value }) => {
   const endpoint = `${PRODUCTS_ENDPOINTS.GET.SEARCH_PRODUCTS.replace(":query", value)}`;
 
   try {
@@ -73,7 +73,7 @@ export const useSearchProductsQuery = action(StringValueSchema, async ({ value }
   }
 });
 
-export const useGetAllProductsCategoriesQuery = action(EmptySchema, async () => {
+export const usingGetAllProductsCategoriesQuery = action(EmptySchema, async () => {
   const endpoint = `${PRODUCTS_ENDPOINTS.GET.GET_ALL_PRODUCTS_CATEGORIES}`;
 
   try {
@@ -94,7 +94,7 @@ export const useGetAllProductsCategoriesQuery = action(EmptySchema, async () => 
   }
 });
 
-export const useGetProductsOfACategoryQuery = action(StringValueSchema, async ({ value }) => {
+export const usingGetProductsOfACategoryQuery = action(StringValueSchema, async ({ value }) => {
   const endpoint = `${PRODUCTS_ENDPOINTS.GET.GET_PRODUCTS_BY_CATEGORY.replace(":category", value)}`;
 
   try {

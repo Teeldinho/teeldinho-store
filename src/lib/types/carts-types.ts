@@ -49,12 +49,8 @@ export const CreateCartSchema = z.object({
 export type CreateCartType = z.infer<typeof CreateCartSchema>;
 
 export const UpdateCartSchema = z.object({
-  merge: z.boolean().default(true),
+  merge: z.boolean().optional().default(true),
   products: z.array(CartProductSchema),
 });
 
 export type UpdateCartType = z.infer<typeof UpdateCartSchema>;
-
-export const DeleteCartSchema = z.object({});
-
-export type DeleteCartType = z.infer<typeof DeleteCartSchema>;

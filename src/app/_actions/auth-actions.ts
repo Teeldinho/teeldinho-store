@@ -7,7 +7,7 @@ import { LoginSchema, UserType } from "@/lib/types/auth-types";
 import { getIronSessionData } from "@/lib/sessions/iron-session";
 import { EmptySchema } from "@/lib/types/shared-types";
 
-export const useLoginMutation = action(LoginSchema, async ({ username, password }) => {
+export const usingLoginMutation = action(LoginSchema, async ({ username, password }) => {
   const endpoint = `${AUTH_ENDPOINTS.POST.LOGIN}`;
 
   try {
@@ -30,11 +30,13 @@ export const useLoginMutation = action(LoginSchema, async ({ username, password 
     const data = await response.json();
     const user = data as UserType;
 
+    // console.log("User logged in:", user);
+
     // save the session to server-only cookies:
-    // const session = await getIronSessionData();
-    // session.id = user.id;
-    // session.token = user.token;
-    // await session.save();
+    const session = await getIronSessionData();
+    session.id = user.id;
+    session.token = user.token;
+    await session.save();
 
     // we return the typed data:
     return user;
@@ -44,7 +46,7 @@ export const useLoginMutation = action(LoginSchema, async ({ username, password 
   }
 });
 
-export const useGetCurrentUserQuery = action(EmptySchema, async () => {
+export const usingGetCurrentUserQuery = action(EmptySchema, async () => {
   const endpoint = `${AUTH_ENDPOINTS.GET.GET_CURRENT_AUTH_USER}`;
 
   try {
@@ -75,7 +77,7 @@ export const useGetCurrentUserQuery = action(EmptySchema, async () => {
   }
 });
 
-export const useRefreshTokenMutation = action(EmptySchema, async () => {
+export const usingRefreshTokenMutation = action(EmptySchema, async () => {
   const endpoint = `${AUTH_ENDPOINTS.POST.REFRESH_TOKEN}`;
 
   try {

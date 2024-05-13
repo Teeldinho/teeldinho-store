@@ -5,15 +5,10 @@ import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
-
-const SessionUserSchema = z.object({
-  id: z.number(),
-  token: z.string(),
-});
+import { SessionUserType } from "@/lib/types/shared-types";
 
 export async function getIronSessionData() {
-  const session = await getIronSession<z.infer<typeof SessionUserSchema>>(cookies(), {
+  const session = await getIronSession<SessionUserType>(cookies(), {
     password: process.env.SESSION_PASSWORD as string,
     cookieName: "userSession",
   });

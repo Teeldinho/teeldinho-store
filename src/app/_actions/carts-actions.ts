@@ -1,11 +1,12 @@
 "use server";
+import "server-only";
 import { CARTS_ENDPOINTS } from "@/lib/api-endpoints/carts/carts-endpoints";
 import { ActionError, action } from "@/lib/safe-action";
-import { CartType } from "@/lib/types/carts-types";
+import { CartType, CreateCartSchema, UpdateCartSchema } from "@/lib/types/carts-types";
 import { EmptySchema, StringValueSchema } from "@/lib/types/shared-types";
-import "server-only";
+import { revalidateTag } from "next/cache";
 
-export const useGetAllCartsQuery = action(EmptySchema, async () => {
+export const usingGetAllCartsQuery = action(EmptySchema, async () => {
   const endpoint = `${CARTS_ENDPOINTS.GET.GET_ALL_CARTS}`;
 
   try {
@@ -30,7 +31,7 @@ export const useGetAllCartsQuery = action(EmptySchema, async () => {
   }
 });
 
-export const useGetCartByIdQuery = action(StringValueSchema, async ({ value }) => {
+export const usingGetCartByIdQuery = action(StringValueSchema, async ({ value }) => {
   const endpoint = `${CARTS_ENDPOINTS.GET.GET_CART_BY_ID.replace(":id", value)}`;
 
   try {
@@ -51,7 +52,7 @@ export const useGetCartByIdQuery = action(StringValueSchema, async ({ value }) =
   }
 });
 
-export const useGetCartOfAUserQuery = action(StringValueSchema, async ({ value }) => {
+export const usingGetCartsOfAUserQuery = action(StringValueSchema, async ({ value }) => {
   const endpoint = `${CARTS_ENDPOINTS.GET.GET_CARTS_BY_USER.replace(":id", value)}`;
 
   try {
@@ -72,13 +73,13 @@ export const useGetCartOfAUserQuery = action(StringValueSchema, async ({ value }
   }
 });
 
-export const useCreateCartMutation = action(StringValueSchema, async ({ value }) => {
+export const usingCreateCartMutation = action(CreateCartSchema, async (cart) => {
   const endpoint = `${CARTS_ENDPOINTS.POST.CREATE_CART}`;
 
   try {
     const response = await fetch(endpoint, {
       method: "POST",
-      body: JSON.stringify(value),
+      body: JSON.stringify(cart),
       headers: {
         "Content-Type": "application/json",
       },
@@ -90,6 +91,8 @@ export const useCreateCartMutation = action(StringValueSchema, async ({ value })
     }
 
     const data = await response.json();
+
+    revalidateTag("carts");
 
     return data as CartType;
   } catch (error) {
@@ -98,13 +101,13 @@ export const useCreateCartMutation = action(StringValueSchema, async ({ value })
   }
 });
 
-export const useUpdateCartMutation = action(StringValueSchema, async ({ value }) => {
+export const usingUpdateCartMutation = action(UpdateCartSchema, async (card) => {
   const endpoint = `${CARTS_ENDPOINTS.PUT.UPDATE_CART}`;
 
   try {
     const response = await fetch(endpoint, {
       method: "PUT",
-      body: JSON.stringify(value),
+      body: JSON.stringify(card),
       headers: {
         "Content-Type": "application/json",
       },
@@ -117,6 +120,8 @@ export const useUpdateCartMutation = action(StringValueSchema, async ({ value })
 
     const data = await response.json();
 
+    revalidateTag("carts");
+
     return data as CartType;
   } catch (error) {
     console.error("Failed to update cart.", error);
@@ -124,7 +129,7 @@ export const useUpdateCartMutation = action(StringValueSchema, async ({ value })
   }
 });
 
-export const useDeleteCartMutation = action(StringValueSchema, async ({ value }) => {
+export const usingDeleteCartMutation = action(StringValueSchema, async ({ value }) => {
   const endpoint = `${CARTS_ENDPOINTS.DELETE.DELETE_CART.replace(":id", value)}`;
 
   try {
@@ -136,6 +141,8 @@ export const useDeleteCartMutation = action(StringValueSchema, async ({ value })
     if (!response.ok) {
       throw new ActionError(`Error: ${response.status}`);
     }
+
+    revalidateTag("carts");
 
     return true;
   } catch (error) {
