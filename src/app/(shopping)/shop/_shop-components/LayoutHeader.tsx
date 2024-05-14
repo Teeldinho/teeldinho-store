@@ -4,7 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, ShoppingBag, Squirrel } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import {
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenu,
+} from "@/components/ui/dropdown-menu";
+import Image from "next/image";
 
 export default function LayoutHeader() {
   return (
@@ -23,10 +31,37 @@ export default function LayoutHeader() {
           />
         </div>
       </div>
+
       <Button className="rounded-full" size="icon" variant="ghost">
         <ShoppingBag className="size-6 text-foreground " />
         <span className="sr-only">Cart</span>
       </Button>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button className="rounded-full" size="icon" variant="ghost">
+            <Image
+              alt="Avatar"
+              className="rounded-full"
+              height="32"
+              src="/placeholder.svg"
+              style={{
+                aspectRatio: "32/32",
+                objectFit: "cover",
+              }}
+              width="32"
+            />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem>Orders</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Logout</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </header>
   );
 }

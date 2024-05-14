@@ -15,13 +15,12 @@ export default async function ProductDetails({ params }: { params: { productId: 
       <div className="absolute top-4 left-4">
         <ButtonBackToStore />
       </div>
-      <div className="grid gap-4 md:gap-10 items-start">
+      <div className="relative grid gap-4 md:gap-10 items-start min-h-96 w-full h-full">
         <Image
           alt="Product Image"
-          className="aspect-[2/3] object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
-          height={900}
-          src={product?.images?.at(0) ?? ""}
-          width={600}
+          fill
+          className="aspect-[2/3] object-fill border border-gray-200 w-full rounded-lg overflow-hidden"
+          src={product?.images?.at(2) ?? ""}
         />
       </div>
       <div className="grid gap-4 md:gap-10 items-start">
@@ -32,11 +31,11 @@ export default async function ProductDetails({ params }: { params: { productId: 
               <StarIcon className="w-5 h-5 fill-primary" />
               <StarIcon className="w-5 h-5 fill-primary" />
               <StarIcon className="w-5 h-5 fill-primary" />
-              <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
+              <StarIcon className="w-5 h-5 fill-primary" />
               <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
             </div>
           </div>
-          <div className="text-sm leading-loose text-muted-foreground">
+          <div className="text-sm leading-loose text-muted-foreground line-clamp-3">
             <p>{product?.description}</p>
           </div>
 
@@ -94,7 +93,7 @@ export default async function ProductDetails({ params }: { params: { productId: 
               </Select>
             </div>
 
-            <ButtonAddToCart productToAdd={{ id: product?.id!, quantity: 1 }} />
+            <ButtonAddToCart productToAdd={{ id: product?.id!, quantity: 1 }} redirectToCheckout />
           </form>
         </div>
       </div>
