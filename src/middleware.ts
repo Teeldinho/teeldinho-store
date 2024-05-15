@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
 
   if (session.isLoggedIn && pathname === "/login") {
     // Redirect authenticated users trying to access the login page
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/shop", request.url));
   }
 
   return NextResponse.next();

@@ -24,7 +24,7 @@ type Props = {
 
 export default function LayoutHeader({ children }: { children?: ReactElement }) {
   return (
-    <header className="bg-background border-b px-4 md:px-6 h-14 flex items-center min-w-full sticky top-0 z-50">
+    <header className="bg-card border-b px-4 md:px-6 h-14 flex items-center min-w-full sticky top-0 z-50">
       <Link className="flex items-center gap-2" href="/shop">
         <Squirrel className="size-6 text-foreground " />
         <span className="font-semibold text-foreground ">Teeldinho</span>

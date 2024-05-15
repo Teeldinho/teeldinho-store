@@ -100,5 +100,3 @@ export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
     }
   },
 });
-
-// export const createCartSlice: StateCreator<CartSlice, [["zustand/devtools", unknown], ["zustand/persist", never]], [], CartSlice> = (set, get) => ({
