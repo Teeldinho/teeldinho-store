@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import heroImage from "../../../../public/store-hero.jpg";
-import LoginForm from "../login/login_components/LoginForm";
+import LoginForm from "./_login-components/LoginForm";
 import ButtonNotImplemented from "@/components/reusable-components/ButtonNotImplemented";
 
 export function Login() {

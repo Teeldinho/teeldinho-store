@@ -5,11 +5,15 @@ import { Label } from "@/components/ui/label";
 import LayoutHeader from "./_shop-components/LayoutHeader";
 import ProductList from "./_shop-components/ProductList";
 import { Suspense } from "react";
+import CartView from "./_shop-components/CartView";
 
 export default function Shop() {
   return (
-    <div className="flex flex-col min-h-screen bg-slate-100">
-      <LayoutHeader />
+    // <div className="flex flex-col min-h-screen bg-slate-100">
+    <div className="flex flex-col min-h-full bg-gray-50/50">
+      {/* <LayoutHeader>
+        <CartView />
+      </LayoutHeader> */}
 
       <main className="flex-1 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-6 p-4 md:p-6">
         <div className="hidden md:block">

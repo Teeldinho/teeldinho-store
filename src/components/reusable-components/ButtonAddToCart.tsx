@@ -6,6 +6,7 @@ import { useShopStore } from "@/providers/store-provider";
 import { CartProductType } from "@/lib/types/carts-types";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { ShoppingBag } from "lucide-react";
 
 type Props = {
   productToAdd: CartProductType;
@@ -30,7 +31,8 @@ export default function ButtonAddToCart({ productToAdd, className, redirectToChe
   };
 
   return (
-    <Button onClick={handleAddToCart} className={cn(className)}>
+    <Button onClick={handleAddToCart} className={cn("flex items-center gap-2", className)}>
+      <ShoppingBag className="size-4" />
       Add to Cart
     </Button>
   );

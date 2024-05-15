@@ -8,7 +8,7 @@ export default function ButtonBackToStore() {
 
   return (
     <Button variant="outline" onClick={() => router.push("/")}>
-      Home
+      Back to Store
     </Button>
   );
 }

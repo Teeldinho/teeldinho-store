@@ -12,9 +12,12 @@ import {
   DropdownMenuContent,
   DropdownMenu,
 } from "@/components/ui/dropdown-menu";
-import Image from "next/image";
 
-export default function LayoutHeader() {
+import Image from "next/image";
+import dpImage from "../../../../../public/dp.jpg";
+import { ReactElement } from "react";
+
+export default function LayoutHeader({ children }: { children?: ReactElement }) {
   return (
     <header className="bg-background/50  border-b dark:border-gray-700 px-4 md:px-6 h-14 flex items-center">
       <Link className="flex items-center gap-2" href="#">
@@ -32,10 +35,8 @@ export default function LayoutHeader() {
         </div>
       </div>
 
-      <Button className="rounded-full" size="icon" variant="ghost">
-        <ShoppingBag className="size-6 text-foreground " />
-        <span className="sr-only">Cart</span>
-      </Button>
+      {/* use server component */}
+      {children}
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -44,7 +45,7 @@ export default function LayoutHeader() {
               alt="Avatar"
               className="rounded-full"
               height="32"
-              src="/placeholder.svg"
+              src={dpImage}
               style={{
                 aspectRatio: "32/32",
                 objectFit: "cover",

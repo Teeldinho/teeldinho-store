@@ -39,9 +39,9 @@ export default async function ProductDetails({ params }: { params: { productId: 
             <p>{product?.description}</p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <div className="text-3xl font-bold">{formatToRand(product?.price ?? 0)}</div>
-            <div className="text-lg font-semibold text-green-600">{formatToPercentage(product?.discountPercentage ?? 0)} off</div>
+            <div className="font-semibold text-green-600">{formatToPercentage(product?.discountPercentage ?? 0)} off</div>
           </div>
 
           <div className="text-4xl font-bold"></div>

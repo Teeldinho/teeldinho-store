@@ -108,7 +108,7 @@ export const usingGetProductsOfACategoryQuery = action(StringValueSchema, async 
 
     const data = await response.json();
 
-    return data as ProductType;
+    return data.products as ProductType[];
   } catch (error) {
     console.error("Failed to fetch products of a category.", error);
     throw error;
