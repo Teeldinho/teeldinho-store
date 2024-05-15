@@ -2,7 +2,7 @@
 import "server-only";
 import { CARTS_ENDPOINTS } from "@/lib/api-endpoints/carts/carts-endpoints";
 import { ActionError, action } from "@/lib/safe-action";
-import { CartType, CreateCartSchema, UpdateCartSchema } from "@/lib/types/carts-types";
+import { CartProductType, CartType, CreateCartSchema, CreateCartType, UpdateCartSchema, UpdateCartType } from "@/lib/types/carts-types";
 import { EmptySchema, StringValueSchema } from "@/lib/types/shared-types";
 import { revalidateTag } from "next/cache";
 
@@ -150,3 +150,26 @@ export const usingDeleteCartMutation = action(StringValueSchema, async ({ value 
     throw error;
   }
 });
+
+export const createOrUpdateCart = async (userId: number, products: CartProductType[]): Promise<CartType> => {
+  const createCart: CreateCartType = {
+    userId,
+    products,
+  };
+
+  const updateCart: UpdateCartType = {
+    merge: true,
+    products,
+  };
+
+  // First try to create a new cart
+  try {
+    const { data: newCart } = await usingCreateCartMutation(createCart);
+    return newCart as CartType;
+  } catch (error) {
+    console.error("Failed to create cart, trying to update", error);
+    // If create fails, try to update
+    const { data: updatedCart } = await usingUpdateCartMutation(updateCart);
+    return updatedCart as CartType;
+  }
+};

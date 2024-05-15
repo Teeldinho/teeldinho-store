@@ -22,7 +22,7 @@ export default function ProductCard({ product }: Props) {
             {product.title}
           </Link>
 
-          <span className="font-semibold text-primary">{formatToRand(product.price)}</span>
+          <span className="font-medium text-primary">{formatToRand(product.price)}</span>
         </CardTitle>
         <CardDescription className="line-clamp-2">{product.description}</CardDescription>
       </CardHeader>

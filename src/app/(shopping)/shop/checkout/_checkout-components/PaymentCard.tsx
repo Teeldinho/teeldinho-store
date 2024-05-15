@@ -3,20 +3,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreditCardIcon, DollarSignIcon, WalletCardsIcon } from "lucide-react";
 import PaymentForm from "./PaymentForm";
-import { usingGetCartsOfAUserQuery } from "@/app/_actions/carts-actions";
-import { getIronSessionData } from "@/lib/sessions/iron-session";
-import { redirect } from "next/navigation";
 
-export default async function PaymentCard() {
-  const { id, isLoggedIn } = await getIronSessionData();
-  // if (isLoggedIn) redirect("/login");
-
-  if (!id) return null;
-
-  const { data: cart } = await usingGetCartsOfAUserQuery({
-    value: id.toString(),
-  });
-
+export default function PaymentCard() {
   return (
     <div className="space-y-6">
       <Card>
@@ -59,7 +47,7 @@ export default async function PaymentCard() {
         </CardContent>
 
         <CardFooter>
-          <PaymentForm cart={cart ?? null} />
+          <PaymentForm />
         </CardFooter>
       </Card>
     </div>

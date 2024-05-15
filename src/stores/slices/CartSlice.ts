@@ -1,102 +1,116 @@
-import { usingCreateCartMutation, usingUpdateCartMutation } from "@/app/_actions/carts-actions";
-import { getIronSessionData } from "@/lib/sessions/iron-session";
-import { CartProductType, CartType } from "@/lib/types/carts-types";
+import { CartProductType, CartType, ProductOfACartType } from "@/lib/types/carts-types";
 import { SliceCreator } from "@/stores/store-types";
+import { createOrUpdateCart } from "@/app/_actions/carts-actions";
+import { getIronSessionData } from "@/lib/sessions/iron-session";
 
 type CartSliceState = {
-  carts: CartType[];
+  cart: CartType | null;
 };
 
 type CartSliceActions = {
-  addToCart: (product: CartProductType) => Promise<void>;
-  removeFromCart: (product: CartProductType) => Promise<void>;
+  addToCart: (product: CartProductType) => void;
+  removeFromCart: (productId: number) => void;
+  increaseQuantity: (productId: number) => void;
+  decreaseQuantity: (productId: number) => void;
+  setQuantity: (productId: number, quantity: number) => void;
+  clearCart: () => void;
+  updateCart: () => Promise<void>;
 };
 
 export type CartSlice = CartSliceState & CartSliceActions;
 
 export const initialCartSliceState: CartSlice = {
-  carts: [] as CartType[],
-  addToCart: async () => {},
-  removeFromCart: async () => {},
+  cart: null,
+  addToCart: () => {},
+  removeFromCart: () => {},
+  increaseQuantity: () => {},
+  decreaseQuantity: () => {},
+  setQuantity: () => {},
+  clearCart: () => {},
+  updateCart: async () => {},
 };
+
+const initializeCart = (): CartType => ({
+  id: Date.now(),
+  products: [],
+  total: 0,
+  discountedTotal: 0,
+  userId: 0,
+  totalProducts: 0,
+  totalQuantity: 0,
+});
 
 export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
   ...initialCartSliceState,
-  addToCart: async (product) => {
-    console.log("Adding to cart:", product);
-    try {
-      const { id: userId } = await getIronSessionData();
-      if (!userId) {
-        throw new Error("User is not logged in.");
+  addToCart: (product) =>
+    set((state) => {
+      if (!state.cart) {
+        state.cart = initializeCart();
       }
-
-      console.log("Adding to cart:", product);
-      console.log("User ID:", userId);
-
-      const existingCart = get().carts.find((c) => c.userId === userId);
-      if (existingCart) {
-        // Update existing cart
-        const updatedProducts = [...existingCart.products, product];
-        const { data: updatedCart } = await usingUpdateCartMutation({
-          merge: true,
-          products: updatedProducts,
-        });
-
-        if (updatedCart) {
-          set((state) => {
-            const cartIndex = state.carts.findIndex((c) => c.id === existingCart.id);
-            state.carts[cartIndex] = updatedCart;
-          });
-        } else {
-          throw new Error("Failed to update cart.");
-        }
+      const existingProduct = state.cart.products.find((p) => p.id === product.id);
+      if (existingProduct) {
+        existingProduct.quantity += product.quantity;
       } else {
-        // Create new cart
-        const { data: newCart } = await usingCreateCartMutation({
-          userId: userId,
-          products: [product],
-        });
-
-        if (!newCart) {
-          throw new Error("Failed to create cart.");
-        }
-
-        set((state) => {
-          state.carts.push(newCart);
-        });
+        const newProduct: ProductOfACartType = {
+          id: product.id,
+          title: "",
+          price: 0,
+          quantity: product.quantity,
+          total: 0,
+          discountPercentage: 0,
+          discountedPrice: 0,
+          thumbnail: "",
+        };
+        state.cart.products.push(newProduct);
       }
-    } catch (error) {
-      console.error("Failed to add to cart:", error);
+      get().updateCart();
+    }),
+  removeFromCart: (productId) =>
+    set((state) => {
+      if (state.cart) {
+        state.cart.products = state.cart.products.filter((p) => p.id !== productId);
+        get().updateCart();
+      }
+    }),
+  increaseQuantity: (productId) =>
+    set((state) => {
+      const product = state.cart?.products.find((p) => p.id === productId);
+      if (product) {
+        product.quantity += 1;
+      }
+      get().updateCart();
+    }),
+  decreaseQuantity: (productId) =>
+    set((state) => {
+      const product = state.cart?.products.find((p) => p.id === productId);
+      if (product && product.quantity > 1) {
+        product.quantity -= 1;
+      }
+      get().updateCart();
+    }),
+  setQuantity: (productId, quantity) =>
+    set((state) => {
+      const product = state.cart?.products.find((p) => p.id === productId);
+      if (product) {
+        product.quantity = quantity;
+      }
+      get().updateCart();
+    }),
+  clearCart: () =>
+    set((state) => {
+      if (state.cart) {
+        state.cart.products = [];
+        get().updateCart();
+      }
+    }),
+  updateCart: async () => {
+    const { id: userId } = await getIronSessionData();
+    if (!userId) {
+      throw new Error("User is not logged in.");
     }
-  },
-  removeFromCart: async (product) => {
-    try {
-      const { id: userId } = await getIronSessionData();
-      if (!userId) {
-        throw new Error("User is not logged in.");
-      }
 
-      const existingCart = get().carts.find((c) => c.userId === userId);
-      if (existingCart) {
-        const remainingProducts = existingCart.products.filter((p) => p.id !== product.id);
-        const { data: updatedCart } = await usingUpdateCartMutation({
-          merge: true,
-          products: remainingProducts,
-        });
-
-        if (updatedCart) {
-          set((state) => {
-            const cartIndex = state.carts.findIndex((c) => c.id === existingCart.id);
-            state.carts[cartIndex] = updatedCart;
-          });
-        } else {
-          throw new Error("Failed to update cart.");
-        }
-      } else {
-        throw new Error("No cart found for this user.");
-      }
-    } catch (error) {
-      console.error("Failed to remove from cart:", error);
-    }
+    const products = get().cart?.products || [];
+    const updatedCart = await createOrUpdateCart(userId, products);
+    set({ cart: updatedCart });
   },
 });

@@ -4,7 +4,7 @@ import "server-only";
 import { AUTH_ENDPOINTS } from "@/lib/api-endpoints/auth/auth-endpoints";
 import { ActionError, action } from "@/lib/safe-action";
 import { LoginSchema, UserType } from "@/lib/types/auth-types";
-import { getIronSessionData, logout } from "@/lib/sessions/iron-session";
+import { getIronSessionData } from "@/lib/sessions/iron-session";
 import { EmptySchema } from "@/lib/types/shared-types";
 
 export const usingLoginMutation = action(LoginSchema, async ({ username, password }) => {

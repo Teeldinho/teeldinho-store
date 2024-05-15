@@ -3,61 +3,46 @@
 import { Button } from "@/components/ui/button";
 import { DrawerTrigger, DrawerTitle, DrawerDescription, DrawerHeader, DrawerContent, Drawer } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
-import { CartType } from "@/lib/types/carts-types";
 import { ShoppingBag } from "lucide-react";
-import CartViewProductSummary from "./CartViewProductSummary";
-import { cn, formatToRand } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import EmptyCart from "./EmptyCart";
+import { useShopStore } from "@/providers/store-provider";
+import CartViewProductSummaryList from "./CartViewProductSummaryList";
+import CartViewProductPricing from "./CartViewProductPricing";
 
-type Props = {
-  cart: CartType | null;
-};
-
-export default function CartViewDrawer(cart: Props) {
-  const router = useRouter();
+export default function CartViewDrawer() {
+  const { cart } = useShopStore((state) => state);
 
   return (
     <Drawer>
       <DrawerTrigger asChild>
         <Button className="rounded-full" size="icon" variant="ghost">
-          <ShoppingBag className="size-6 text-foreground " />
+          <div className="relative">
+            <div className="absolute size-4 flex items-center justify-center ring-1 ring-primary bg-green-400 text-sm rounded-full -right-1 -top-1 text-black font-bold">
+              {cart?.totalQuantity ?? 0}
+            </div>
+            <ShoppingBag className="size-6 text-foreground" />
+          </div>
           <span className="sr-only">Cart</span>
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
-        {cart && cart.cart ? (
-          <>
-            <DrawerHeader className={cn("max-w-1/2 mx-auto", cart && cart.cart ? "hidden" : null)}>
-              <DrawerTitle>Your Cart</DrawerTitle>
-              <DrawerDescription>Review and update your cart items.</DrawerDescription>
-            </DrawerHeader>
-          </>
+      <DrawerContent className="min-w-96">
+        {cart && cart.totalProducts > 0 ? (
+          <DrawerHeader className={cn("max-w-1/2 mx-auto", !cart ? "hidden" : null)}>
+            <DrawerTitle className="text-center">Your Cart</DrawerTitle>
+            <DrawerDescription>Review and update your cart items.</DrawerDescription>
+          </DrawerHeader>
         ) : undefined}
 
         <div className="max-w-1/2 mx-auto grid gap-6 p-4">
-          {cart && cart.cart ? (
+          {cart ? (
             <>
-              <CartViewProductSummary cart={cart.cart} />
+              <CartViewProductSummaryList />
+
               <Separator />
-              <div className="grid gap-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Subtotal</span>
-                  <span className="font-medium">{formatToRand(cart.cart.total)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Items</span>
-                  <span className="font-medium">{cart.cart.totalQuantity}</span>
-                </div>
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <Button className="flex-1" size="lg" onClick={() => router.push("store/checkout")}>
-                    Proceed to Checkout
-                  </Button>
-                  <Button className="flex-1" size="lg" variant="outline" onClick={() => router.push("store")}>
-                    Continue Shopping
-                  </Button>
-                </div>
-              </div>
+
+              <CartViewProductPricing />
             </>
           ) : (
             <>

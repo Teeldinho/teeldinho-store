@@ -5,32 +5,19 @@ import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@
 import Image from "next/image";
 import { TrashIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CartProductType, CartType } from "@/lib/types/carts-types";
 import { Fragment } from "react";
 import { formatToRand } from "@/lib/utils";
 import { useShopStore } from "@/providers/store-provider";
 
-type Prop = {
-  cart: CartType | null;
-};
-
-export default function OrderSummaryTable(cart: Prop) {
-  const { removeFromCart } = useShopStore((state) => state);
-  const { cart: cartInQuestion } = cart;
+export default function OrderSummaryTable() {
+  const { cart, removeFromCart } = useShopStore((state) => state);
 
   const handleRemoveProductFromCart = (productId: number) => {
-    const productToRemove = cartInQuestion?.products.find((product) => product.id === productId);
-
+    const productToRemove = cart?.products.find((product) => product.id === productId);
     if (!productToRemove) {
       return;
     }
-
-    const product: CartProductType = {
-      id: productToRemove.id,
-      quantity: productToRemove.quantity,
-    };
-
-    removeFromCart(product);
+    removeFromCart(productToRemove.id);
   };
 
   return (
@@ -46,8 +33,8 @@ export default function OrderSummaryTable(cart: Prop) {
       </TableHeader>
 
       <TableBody>
-        {cartInQuestion ? (
-          cartInQuestion.products.map((product) => (
+        {cart ? (
+          cart.products.map((product) => (
             <Fragment key={product.id}>
               <TableRow>
                 <TableCell className="hidden md:table-cell">
@@ -61,7 +48,7 @@ export default function OrderSummaryTable(cart: Prop) {
                 </TableCell>
                 <TableCell className="font-medium">{product.title}</TableCell>
                 <TableCell>
-                  <Select defaultValue="1">
+                  <Select defaultValue={product.quantity.toString()}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -73,9 +60,9 @@ export default function OrderSummaryTable(cart: Prop) {
                   </Select>
                 </TableCell>
                 <TableCell>{formatToRand(product.price)}</TableCell>
-                <TableCell className="hidden md:table-cell">
+                <TableCell className="table-cell">
                   <Button size="icon" variant="outline" onClick={() => handleRemoveProductFromCart(product.id)}>
-                    <TrashIcon className="h-4 w-4" />
+                    <TrashIcon className="h-4 w-4 text-red-500" />
                     <span className="sr-only">Remove</span>
                   </Button>
                 </TableCell>

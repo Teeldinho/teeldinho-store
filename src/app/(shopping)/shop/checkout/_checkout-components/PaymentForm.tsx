@@ -2,54 +2,52 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { CartType } from "@/lib/types/carts-types";
 import { formatToRand } from "@/lib/utils";
+import { useShopStore } from "@/providers/store-provider";
+import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
-const SHIPPING_FEE = 0;
+const SHIPPING_FEE = 150;
 
-type Prop = {
-  cart: CartType | null;
-};
+export default function PaymentForm() {
+  const { cart, updateCart } = useShopStore((state) => state);
 
-export default function PaymentForm(cart: Prop) {
-  const { cart: cartInQuestion } = cart;
-
-  if (!cartInQuestion) {
+  if (!cart) {
     return <p>Cart is empty. Failed to pricing details.</p>;
   }
 
-  const discountedTotal = cartInQuestion.discountedTotal ?? 0;
-  const total = cartInQuestion.total ?? 0;
-
-  const orderTotal = total - discountedTotal + SHIPPING_FEE;
+  const total = cart.total ?? 0;
+  const orderTotal = total + SHIPPING_FEE;
 
   const handlePlaceOrder = () => {
+    updateCart();
+
     toast.info("Placing Order...", {
-      description: `Your order total is $${formatToRand(orderTotal)}.`,
+      description: `Your order total is ${formatToRand(orderTotal)}.`,
     });
   };
 
   return (
-    <div className="flex items-center w-full justify-between">
-      <div className="space-y-1">
+    <div className="flex flex-col items-center w-full justify-between gap-4">
+      <div className="space-y-2 w-full">
         <div className="flex items-center justify-between">
-          <span className="font-bold">Subtotal</span>
-          <span>{formatToRand(cartInQuestion.total ?? 0)}</span>
+          <span className="font-normal">Subtotal</span>
+          <span className="font-semibold">{formatToRand(total ?? 0)}</span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="font-bold">Shipping</span>
-          <span>{formatToRand(SHIPPING_FEE)}</span>
+          <span className="font-normal">Shipping</span>
+          <span className="font-semibold">{formatToRand(SHIPPING_FEE)}</span>
         </div>
         <Separator />
         <div className="flex items-center justify-between font-medium">
           <span className="font-bold">Total</span>
-          <span>{formatToRand(orderTotal)}</span>
+          <span className="font-extrabold">{formatToRand(orderTotal)}</span>
         </div>
       </div>
 
-      <Button size="lg" onClick={handlePlaceOrder}>
+      <Button className="w-full" size="lg" onClick={handlePlaceOrder}>
         Place Order
+        <ArrowRight className="ml-2 size-4" />
       </Button>
     </div>
   );
