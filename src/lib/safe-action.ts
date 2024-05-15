@@ -1,5 +1,6 @@
-// import { randomUUID } from "crypto";
 import { DEFAULT_SERVER_ERROR, createSafeActionClient } from "next-safe-action";
+import { cookies } from "next/headers";
+import { getIronSessionData } from "./sessions/iron-session";
 
 export class ActionError extends Error {}
 
@@ -24,10 +25,21 @@ export const action = createSafeActionClient({
 });
 
 export const authAction = createSafeActionClient({
-  // You can provide a middleware function. In this case, context is used
-  // for (fake) auth purposes.
-  middleware(parsedInput) {
-    // const userId = randomUUID();
+  async middleware() {
+    const session = cookies().get("userSession")?.value;
+    if (!session) {
+      throw new Error("Session not found!");
+    }
+
+    // if a session is found, we retrive our user id:
+    const sessionData = await getIronSessionData();
+
+    if (!sessionData) {
+      throw new Error("Session is not valid!");
+    }
+
+    // we can now use this userId in all our auth actions,
+    // for instance, if we want to know which user made a specific action or request.
+    return { userId: sessionData.id };
   },
-  handleReturnedServerError,
 });

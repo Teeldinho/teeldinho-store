@@ -9,11 +9,15 @@ import { toast } from "sonner";
 const SHIPPING_FEE = 0;
 
 type Prop = {
-  cart: CartType;
+  cart: CartType | null;
 };
 
 export default function PaymentForm(cart: Prop) {
   const { cart: cartInQuestion } = cart;
+
+  if (!cartInQuestion) {
+    return <p>Cart is empty. Failed to pricing details.</p>;
+  }
 
   const discountedTotal = cartInQuestion.discountedTotal ?? 0;
   const total = cartInQuestion.total ?? 0;

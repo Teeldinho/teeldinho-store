@@ -1,17 +1,18 @@
 import { CardTitle, CardHeader, CardContent, Card, CardFooter } from "@/components/ui/card";
-import { usingGetCurrentUserQuery } from "@/app/_actions/auth-actions";
 import { usingGetCartsOfAUserQuery } from "@/app/_actions/carts-actions";
 import OrderSummaryTable from "./OrderSummaryTable";
+import { getIronSessionData } from "@/lib/sessions/iron-session";
 
 export default async function OrderSummaryCard() {
-  const user = await usingGetCurrentUserQuery({});
-  const { data: cart } = await usingGetCartsOfAUserQuery({
-    value: (user?.data?.id ?? 0).toString(),
-  });
+  const { id } = await getIronSessionData();
 
-  if (!cart) {
-    return <div>Cart is empty. Failed to products.</div>;
-  }
+  // if (!id) throw new Error("User not found");
+
+  if (!id) return null;
+
+  const { data: cart } = await usingGetCartsOfAUserQuery({
+    value: id.toString(),
+  });
 
   return (
     <Card>
@@ -19,7 +20,7 @@ export default async function OrderSummaryCard() {
         <CardTitle>Cart</CardTitle>
       </CardHeader>
       <CardContent>
-        <OrderSummaryTable cart={cart} />
+        <OrderSummaryTable cart={cart ?? null} />
       </CardContent>
     </Card>
   );

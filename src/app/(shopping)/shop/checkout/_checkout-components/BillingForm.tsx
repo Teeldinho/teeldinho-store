@@ -17,12 +17,12 @@ export default function BillingForm() {
       </div>
       <div className="space-y-2">
         <Label htmlFor="address">Address</Label>
-        <Textarea id="address" placeholder="123 Main St, Anytown USA" />
+        <Textarea id="address" placeholder="123 Main St, Anytown, South Africa" />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="phone">Phone</Label>
-          <Input id="phone" placeholder="+1 (555) 555-5555" type="tel" />
+          <Input id="phone" placeholder="+27 (55) 555-5555" type="tel" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="zip">Zip Code</Label>

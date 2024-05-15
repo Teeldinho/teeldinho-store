@@ -4,7 +4,7 @@ import "server-only";
 import { AUTH_ENDPOINTS } from "@/lib/api-endpoints/auth/auth-endpoints";
 import { ActionError, action } from "@/lib/safe-action";
 import { LoginSchema, UserType } from "@/lib/types/auth-types";
-import { getIronSessionData } from "@/lib/sessions/iron-session";
+import { getIronSessionData, logout } from "@/lib/sessions/iron-session";
 import { EmptySchema } from "@/lib/types/shared-types";
 
 export const usingLoginMutation = action(LoginSchema, async ({ username, password }) => {
@@ -30,13 +30,12 @@ export const usingLoginMutation = action(LoginSchema, async ({ username, passwor
     const data = await response.json();
     const user = data as UserType;
 
-    // console.log("User logged in:", user);
-
     // save the session to server-only cookies:
-    // const session = await getIronSessionData();
-    // session.id = user.id;
-    // session.token = user.token;
-    // await session.save();
+    const session = await getIronSessionData();
+    session.id = user.id;
+    session.token = user.token;
+    session.isLoggedIn = true;
+    await session.save();
 
     // we return the typed data:
     return user;

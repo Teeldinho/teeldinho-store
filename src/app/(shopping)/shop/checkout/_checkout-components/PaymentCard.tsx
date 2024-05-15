@@ -5,16 +5,16 @@ import { CreditCardIcon, DollarSignIcon, WalletCardsIcon } from "lucide-react";
 import PaymentForm from "./PaymentForm";
 import { usingGetCartsOfAUserQuery } from "@/app/_actions/carts-actions";
 import { usingGetCurrentUserQuery } from "@/app/_actions/auth-actions";
+import { getIronSessionData } from "@/lib/sessions/iron-session";
 
 export default async function PaymentCard() {
-  const user = await usingGetCurrentUserQuery({});
-  const { data: cart } = await usingGetCartsOfAUserQuery({
-    value: (user?.data?.id ?? 0).toString(),
-  });
+  const { id } = await getIronSessionData();
+  // if (!id) throw new Error("User not found");
+  if (!id) return null;
 
-  if (!cart) {
-    return <div>Cart is empty. Failed to load Payment.</div>;
-  }
+  const { data: cart } = await usingGetCartsOfAUserQuery({
+    value: id.toString(),
+  });
 
   return (
     <div className="space-y-6">
@@ -27,7 +27,7 @@ export default async function PaymentCard() {
             <div>
               <RadioGroupItem className="peer sr-only" id="card" value="card" />
               <Label
-                className="flex flex-col items-center justify-between rounded-md border-2 border-gray-100 bg-white p-4 hover:bg-gray-100 hover:text-gray-900 peer-data-[state=checked]:border-gray-900 [&:has([data-state=checked])]:border-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:peer-data-[state=checked]:border-gray-50 dark:[&:has([data-state=checked])]:border-gray-50"
+                className="flex flex-col items-center justify-between rounded-md border-2 border-gray-100 bg-white p-4 hover:bg-primary/5 hover:text-primary peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                 htmlFor="card"
               >
                 <CreditCardIcon className="mb-3 h-6 w-6" />
@@ -37,7 +37,7 @@ export default async function PaymentCard() {
             <div>
               <RadioGroupItem className="peer sr-only" id="paypal" value="paypal" />
               <Label
-                className="flex flex-col items-center justify-between rounded-md border-2 border-gray-100 bg-white p-4 hover:bg-gray-100 hover:text-gray-900 peer-data-[state=checked]:border-gray-900 [&:has([data-state=checked])]:border-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:peer-data-[state=checked]:border-gray-50 dark:[&:has([data-state=checked])]:border-gray-50"
+                className="flex flex-col items-center justify-between rounded-md border-2 border-gray-100 bg-white p-4 hover:bg-primary/5 hover:text-primary peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                 htmlFor="paypal"
               >
                 <WalletCardsIcon className="mb-3 h-6 w-6" />
@@ -47,7 +47,7 @@ export default async function PaymentCard() {
             <div>
               <RadioGroupItem className="peer sr-only" id="apple" value="apple" />
               <Label
-                className="flex flex-col items-center justify-between rounded-md border-2 border-gray-100 bg-white p-4 hover:bg-gray-100 hover:text-gray-900 peer-data-[state=checked]:border-gray-900 [&:has([data-state=checked])]:border-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:peer-data-[state=checked]:border-gray-50 dark:[&:has([data-state=checked])]:border-gray-50"
+                className="flex flex-col items-center justify-between rounded-md border-2 border-gray-100 bg-white p-4 hover:bg-primary/5 hover:text-primary peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                 htmlFor="apple"
               >
                 <DollarSignIcon className="mb-3 h-6 w-6" />
@@ -58,7 +58,7 @@ export default async function PaymentCard() {
         </CardContent>
 
         <CardFooter>
-          <PaymentForm cart={cart} />
+          <PaymentForm cart={cart ?? null} />
         </CardFooter>
       </Card>
     </div>

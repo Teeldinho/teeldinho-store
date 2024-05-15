@@ -28,7 +28,7 @@ export default function LoginForm() {
   const { execute, status } = useAction(usingLoginMutation, {
     onSuccess(data) {
       if (data) {
-        router.push("/");
+        router.push("/shop");
 
         toast.success(`Welcome, ${data.firstName}!`, {
           description: "You can now access your account.",

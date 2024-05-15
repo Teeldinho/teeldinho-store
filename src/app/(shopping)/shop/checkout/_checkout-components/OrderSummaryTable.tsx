@@ -11,7 +11,7 @@ import { formatToRand } from "@/lib/utils";
 import { useShopStore } from "@/providers/store-provider";
 
 type Prop = {
-  cart: CartType;
+  cart: CartType | null;
 };
 
 export default function OrderSummaryTable(cart: Prop) {
@@ -46,41 +46,45 @@ export default function OrderSummaryTable(cart: Prop) {
       </TableHeader>
 
       <TableBody>
-        {cartInQuestion?.products.map((product) => (
-          <Fragment key={product.id}>
-            <TableRow>
-              <TableCell className="hidden md:table-cell">
-                <Image
-                  alt="Product image"
-                  className="aspect-square rounded-md object-cover"
-                  height="64"
-                  src={product.thumbnail ?? "/placeholder.svg"}
-                  width="64"
-                />
-              </TableCell>
-              <TableCell className="font-medium">{product.title}</TableCell>
-              <TableCell>
-                <Select defaultValue="1">
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={product.quantity.toString()} disabled>
-                      {product.quantity.toString()}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </TableCell>
-              <TableCell>{formatToRand(product.price)}</TableCell>
-              <TableCell className="hidden md:table-cell">
-                <Button size="icon" variant="outline" onClick={() => handleRemoveProductFromCart(product.id)}>
-                  <TrashIcon className="h-4 w-4" />
-                  <span className="sr-only">Remove</span>
-                </Button>
-              </TableCell>
-            </TableRow>
-          </Fragment>
-        ))}
+        {cartInQuestion ? (
+          cartInQuestion.products.map((product) => (
+            <Fragment key={product.id}>
+              <TableRow>
+                <TableCell className="hidden md:table-cell">
+                  <Image
+                    alt="Product image"
+                    className="aspect-square rounded-md object-cover"
+                    height="64"
+                    src={product.thumbnail ?? "/placeholder.svg"}
+                    width="64"
+                  />
+                </TableCell>
+                <TableCell className="font-medium">{product.title}</TableCell>
+                <TableCell>
+                  <Select defaultValue="1">
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={product.quantity.toString()} disabled>
+                        {product.quantity.toString()}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </TableCell>
+                <TableCell>{formatToRand(product.price)}</TableCell>
+                <TableCell className="hidden md:table-cell">
+                  <Button size="icon" variant="outline" onClick={() => handleRemoveProductFromCart(product.id)}>
+                    <TrashIcon className="h-4 w-4" />
+                    <span className="sr-only">Remove</span>
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </Fragment>
+          ))
+        ) : (
+          <p className="min-w-full text-center mx-auto mt-4 text-nowrap">Your cart is empty.</p>
+        )}
       </TableBody>
     </Table>
   );

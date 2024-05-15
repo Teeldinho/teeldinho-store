@@ -6,8 +6,9 @@ import LayoutHeader from "./_shop-components/LayoutHeader";
 import ProductList from "./_shop-components/ProductList";
 import { Suspense } from "react";
 import CartView from "./_shop-components/CartView";
+import { usingGetCurrentUserQuery } from "@/app/_actions/auth-actions";
 
-export default function Shop() {
+export default async function Shop() {
   return (
     // <div className="flex flex-col min-h-screen bg-slate-100">
     <div className="flex flex-col min-h-full bg-gray-50/50">

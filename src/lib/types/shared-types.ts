@@ -9,8 +9,9 @@ export const EmptySchema = z.object({});
 export type EmptySchemaType = z.infer<typeof EmptySchema>;
 
 const SessionUserSchema = z.object({
-  id: z.number(),
-  token: z.string(),
+  id: z.number().nullable(),
+  token: z.string().nullable(),
+  isLoggedIn: z.boolean().default(false),
 });
 
 export type SessionUserType = z.infer<typeof SessionUserSchema>;
