@@ -1,8 +1,9 @@
-import { CartProductType, CartType, ProductOfACartType } from "@/lib/types/carts-types";
+import { CartProductType, CartType } from "@/lib/types/carts-types";
 import { SliceCreator } from "@/stores/store-types";
 import { createOrUpdateCart } from "@/app/_actions/carts-actions";
 import { getIronSessionData } from "@/lib/sessions/iron-session";
 import { addOrUpdateProduct, createNewProduct, findProduct, initializeCart } from "./helpers/cart-slice-helpers";
+import { debounce } from "lodash";
 
 export type CartSliceState = {
   cart: CartType | null;
@@ -33,18 +34,22 @@ export const initialCartSliceState: CartSlice = {
   getProductQuantity: () => 0,
 };
 
+const debouncedUpdateCart = debounce(async (updateCart: () => Promise<void>) => {
+  await updateCart();
+}, 1000);
+
 export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
   ...initialCartSliceState,
   addToCart: (product) =>
     set((state) => {
       addOrUpdateProduct(state, product);
-      get().updateCart();
+      debouncedUpdateCart(get().updateCart);
     }),
   removeFromCart: (productId) =>
     set((state) => {
       if (state.cart) {
         state.cart.products = state.cart.products.filter((p) => p.id !== productId);
-        get().updateCart();
+        debouncedUpdateCart(get().updateCart);
       }
     }),
   increaseQuantity: (productId) =>
@@ -58,7 +63,7 @@ export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
       } else {
         state.cart.products.push(createNewProduct(productId, 1));
       }
-      get().updateCart();
+      debouncedUpdateCart(get().updateCart);
     }),
   decreaseQuantity: (productId) =>
     set((state) => {
@@ -70,7 +75,7 @@ export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
           state.cart!.products = state.cart!.products.filter((p) => p.id !== productId);
         }
       }
-      get().updateCart();
+      debouncedUpdateCart(get().updateCart);
     }),
   setQuantity: (productId, quantity) =>
     set((state) => {
@@ -83,13 +88,13 @@ export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
         }
         state.cart.products.push(createNewProduct(productId, quantity));
       }
-      get().updateCart();
+      debouncedUpdateCart(get().updateCart);
     }),
   clearCart: () =>
     set((state) => {
       if (state.cart) {
         state.cart.products = [];
-        get().updateCart();
+        debouncedUpdateCart(get().updateCart);
       }
     }),
   updateCart: async () => {
