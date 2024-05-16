@@ -25,9 +25,9 @@ export default function ButtonAddToCart({
   const { addToCart } = useShopStore((state) => state);
 
   const handleAddToCart = async () => {
-    await addToCart(productToAdd);
+    addToCart(productToAdd);
 
-    toast.info("Item added to cart.", {
+    toast.success("Item added to cart.", {
       description: "You can now view your cart.",
     });
 

@@ -83,8 +83,12 @@ export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
   decreaseQuantity: (productId) =>
     set((state) => {
       const product = state.cart?.products.find((p) => p.id === productId);
-      if (product && product.quantity > 1) {
-        product.quantity -= 1;
+      if (product) {
+        if (product.quantity > 1) {
+          product.quantity -= 1;
+        } else {
+          state.cart!.products = state.cart!.products.filter((p) => p.id !== productId);
+        }
       }
       get().updateCart();
     }),

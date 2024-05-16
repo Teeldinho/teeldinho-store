@@ -6,6 +6,8 @@ import { formatToRand } from "@/lib/utils";
 import { useShopStore } from "@/providers/store-provider";
 import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { loadStripe } from "@stripe/stripe-js";
+import { createCheckoutSession } from "@/app/_actions/carts-actions";
 
 const SHIPPING_FEE = 150;
 
@@ -19,12 +21,28 @@ export default function PaymentForm() {
   const total = cart.total ?? 0;
   const orderTotal = total + SHIPPING_FEE;
 
-  const handlePlaceOrder = () => {
-    updateCart();
+  const handlePlaceOrder = async () => {
+    try {
+      await updateCart();
 
-    toast.info("Placing Order...", {
-      description: `Your order total is ${formatToRand(orderTotal)}.`,
-    });
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string);
+
+      const { data: sessionId } = await createCheckoutSession(cart);
+
+      if (stripe && sessionId) {
+        await stripe.redirectToCheckout({ sessionId });
+
+        toast.info("Redirecting to payment", {
+          description: `Your order total is ${formatToRand(orderTotal)}.`,
+        });
+      } else {
+        throw new Error("Failed to redirect to payment");
+      }
+    } catch (error) {
+      toast.error("Failed to redirect to payment", {
+        description: (error as Error).message,
+      });
+    }
   };
 
   return (
