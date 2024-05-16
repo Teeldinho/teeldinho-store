@@ -23,13 +23,10 @@ export const formatToPercentage = (value: number) => {
 };
 
 export const getDomain = () => {
-  // Check for Vercel environment variables
-  if (process.env.VERCEL_ENV === "production") {
-    return `https://${process.env.VERCEL_URL}`; // Production URL
+  if (process.env.NODE_ENV === "production") {
+    // Use the domain set in the Vercel environment variable
+    return process.env.NEXT_PUBLIC_DOMAIN;
   }
-  if (process.env.VERCEL_ENV === "preview") {
-    return `https://${process.env.VERCEL_URL}`; // Preview URL
-  }
-  // Default to the local development domain
+  // Use localhost for development
   return process.env.NEXT_PUBLIC_DOMAIN || "http://localhost:3000";
 };
