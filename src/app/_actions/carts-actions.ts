@@ -6,13 +6,7 @@ import { CartProductType, CartSchema, CartType, CreateCartSchema, CreateCartType
 import { EmptySchema, StringValueSchema } from "@/lib/types/shared-types";
 import { revalidateTag } from "next/cache";
 import Stripe from "stripe";
-
-const getDomain = () => {
-  if (process.env.NEXT_PUBLIC_DOMAIN) {
-    return process.env.NEXT_PUBLIC_DOMAIN;
-  }
-  return "http://localhost:3000";
-};
+import { getDomain } from "@/lib/utils";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 

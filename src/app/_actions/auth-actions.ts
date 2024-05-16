@@ -1,7 +1,6 @@
 "use server";
 import "server-only";
 
-import Stripe from "stripe";
 import { AUTH_ENDPOINTS } from "@/lib/api-endpoints/auth/auth-endpoints";
 import { ActionError, action } from "@/lib/safe-action";
 import { LoginSchema, UserType } from "@/lib/types/auth-types";

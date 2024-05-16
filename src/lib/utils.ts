@@ -21,3 +21,15 @@ export const formatToPercentage = (value: number) => {
     maximumFractionDigits: 0,
   }).format(value / 100);
 };
+
+export const getDomain = () => {
+  // Check for Vercel environment variables
+  if (process.env.VERCEL_ENV === "production") {
+    return `https://${process.env.VERCEL_URL}`; // Production URL
+  }
+  if (process.env.VERCEL_ENV === "preview") {
+    return `https://${process.env.VERCEL_URL}`; // Preview URL
+  }
+  // Default to the local development domain
+  return process.env.NEXT_PUBLIC_DOMAIN || "http://localhost:3000";
+};

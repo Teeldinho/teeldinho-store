@@ -20,9 +20,9 @@ export default function ProductDetailsActions({ product }: ProductDetailsActions
   };
 
   return (
-    <div className="grid gap-4 md:gap-6">
-      <div className="grid gap-2">
-        <Label className="text-base" htmlFor="quantity">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center gap-4">
+        <Label className="text-base text-muted-foreground" htmlFor="quantity">
           Quantity
         </Label>
         <Select defaultValue="1" onValueChange={(value) => setQuantity(Number(value))}>
