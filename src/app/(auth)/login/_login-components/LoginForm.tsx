@@ -20,8 +20,8 @@ export default function LoginForm() {
   const form = useForm<LoginType>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: process.env.NEXT_PUBLIC_CORRECT_USERNAME ?? "",
+      password: process.env.NEXT_PUBLIC_CORRECT_PASSWORD ?? "",
     },
   });
 
