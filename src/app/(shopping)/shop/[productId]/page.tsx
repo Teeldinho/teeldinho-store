@@ -1,12 +1,9 @@
 import { usingGetProductByIdQuery } from "@/app/_actions/products-actions";
-import { Label } from "@/components/ui/label";
-import { RadioGroupItem, RadioGroup } from "@/components/ui/radio-group";
-import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select";
 import Image from "next/image";
 import { formatToPercentage, formatToRand } from "@/lib/utils";
-import ButtonAddToCart from "@/components/reusable-components/ButtonAddToCart";
 import { StarIcon } from "lucide-react";
 import { Suspense } from "react";
+import ProductDetailsForm from "./_product-details-components/ProductDetailsForm";
 
 export default async function ProductDetails({ params }: { params: { productId: string } }) {
   const { data: product } = await usingGetProductByIdQuery({ value: params.productId });
@@ -22,6 +19,7 @@ export default async function ProductDetails({ params }: { params: { productId: 
       }
     }
   }
+
   return (
     <Suspense fallback={<div>Loading Product Details...</div>}>
       <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start max-w-7xl px-4 mx-auto py-8 relative w-full min-h-full">
@@ -49,27 +47,7 @@ export default async function ProductDetails({ params }: { params: { productId: 
               <div className="font-semibold text-primary">{formatToPercentage(product?.discountPercentage ?? 0)} off</div>
             </div>
 
-            <form className="grid gap-4 md:gap-6">
-              <div className="grid gap-2">
-                <Label className="text-base" htmlFor="quantity">
-                  Quantity
-                </Label>
-                <Select defaultValue="1">
-                  <SelectTrigger className="w-24">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: product?.stock ?? 0 }, (_, i) => (
-                      <SelectItem key={i} value={String(i + 1)}>
-                        {i + 1}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <ButtonAddToCart variant={"default"} productToAdd={{ id: product?.id!, quantity: 1 }} redirectToCheckout className="max-w-fit" />
-            </form>
+            {product && <ProductDetailsForm product={product} />}
           </div>
         </div>
       </div>
