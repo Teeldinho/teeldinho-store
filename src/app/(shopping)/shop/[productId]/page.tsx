@@ -3,7 +3,9 @@ import Image from "next/image";
 import { formatToPercentage, formatToRand } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
 import { Suspense } from "react";
-import ProductDetailsForm from "./_product-details-components/ProductDetailsForm";
+import ButtonIncreaseDecreaseQuantity from "../_shop-components/ButtonIncreaseDecreaseQuantity";
+import ButtonAddToCart from "@/components/reusable-components/ButtonAddToCart";
+import ProductDetailsActions from "./_product-details-components/ProductDetailsActions";
 
 export default async function ProductDetails({ params }: { params: { productId: string } }) {
   const { data: product } = await usingGetProductByIdQuery({ value: params.productId });
@@ -47,7 +49,7 @@ export default async function ProductDetails({ params }: { params: { productId: 
               <div className="font-semibold text-primary">{formatToPercentage(product?.discountPercentage ?? 0)} off</div>
             </div>
 
-            {product && <ProductDetailsForm product={product} />}
+            {product && <ProductDetailsActions product={product} />}
           </div>
         </div>
       </div>

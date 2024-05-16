@@ -15,6 +15,7 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({ route, caption, cla
 
   return (
     <Button onClick={() => router.push(route)} className={cn(className)} {...props}>
+      {props.children}
       {caption}
     </Button>
   );

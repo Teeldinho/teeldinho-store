@@ -5,16 +5,22 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectValue, SelectTrigger, SelectItem, SelectContent } from "@/components/ui/select";
 import ButtonAddToCart from "@/components/reusable-components/ButtonAddToCart";
 import { ProductType } from "@/lib/types/products-types";
+import { CartProductType } from "@/lib/types/carts-types";
 
-type ProductFormProps = {
+type ProductDetailsActionsProps = {
   product: ProductType;
 };
 
-export default function ProductDetailsForm({ product }: ProductFormProps) {
+export default function ProductDetailsActions({ product }: ProductDetailsActionsProps) {
   const [quantity, setQuantity] = useState(1);
 
+  const productToAdd: CartProductType = {
+    id: product.id,
+    quantity,
+  };
+
   return (
-    <form className="grid gap-4 md:gap-6">
+    <div className="grid gap-4 md:gap-6">
       <div className="grid gap-2">
         <Label className="text-base" htmlFor="quantity">
           Quantity
@@ -33,7 +39,7 @@ export default function ProductDetailsForm({ product }: ProductFormProps) {
         </Select>
       </div>
 
-      <ButtonAddToCart variant={"default"} productToAdd={{ id: product.id, quantity }} redirectToCheckout className="max-w-fit" />
-    </form>
+      <ButtonAddToCart variant={"default"} productToAdd={productToAdd} redirectToCheckout={true} className="max-w-fit" />
+    </div>
   );
 }

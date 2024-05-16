@@ -8,16 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Fragment } from "react";
 import { formatToRand } from "@/lib/utils";
 import { useShopStore } from "@/providers/store-provider";
+import ButtonIncreaseDecreaseQuantity from "../../_shop-components/ButtonIncreaseDecreaseQuantity";
 
 export default function OrderSummaryTable() {
   const { cart, removeFromCart } = useShopStore((state) => state);
 
   const handleRemoveProductFromCart = (productId: number) => {
-    const productToRemove = cart?.products.find((product) => product.id === productId);
-    if (!productToRemove) {
-      return;
-    }
-    removeFromCart(productToRemove.id);
+    removeFromCart(productId);
   };
 
   return (
@@ -48,20 +45,16 @@ export default function OrderSummaryTable() {
                 </TableCell>
                 <TableCell className="font-medium">{product.title}</TableCell>
                 <TableCell>
-                  <Select defaultValue={product.quantity.toString()}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value={product.quantity.toString()} disabled>
-                        {product.quantity.toString()}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <ButtonIncreaseDecreaseQuantity
+                    product={{
+                      id: product.id,
+                      quantity: product.quantity,
+                    }}
+                  />
                 </TableCell>
-                <TableCell>{formatToRand(product.price)}</TableCell>
+                <TableCell>{formatToRand(product.price * product.quantity)}</TableCell>
                 <TableCell className="table-cell">
-                  <Button size="icon" variant="outline" onClick={() => handleRemoveProductFromCart(product.id)}>
+                  <Button size="icon" variant="outline" onClick={() => removeFromCart(product.id)}>
                     <TrashIcon className="h-4 w-4 text-red-500" />
                     <span className="sr-only">Remove</span>
                   </Button>

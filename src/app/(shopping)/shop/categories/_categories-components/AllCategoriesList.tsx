@@ -34,9 +34,7 @@ const categories = [
   { icon: <SofaIcon className="size-10" />, name: "Furniture", href: "#" },
   { icon: <ShirtIcon className="size-10" />, name: "Clothing", href: "#" },
   { icon: <WatchIcon className="size-10" />, name: "Watches", href: "#" },
-  { icon: <ShoppingBagIcon className="size-10" />, name: "Bags", href: "#" },
   { icon: <DiamondIcon className="size-10" />, name: "Jewelry", href: "#" },
   { icon: <GlassesIcon className="size-10" />, name: "Sunglasses", href: "#" },
-  { icon: <CarIcon className="size-10" />, name: "Automotive", href: "#" },
   { icon: <LightbulbIcon className="size-10" />, name: "Lighting", href: "#" },
 ];

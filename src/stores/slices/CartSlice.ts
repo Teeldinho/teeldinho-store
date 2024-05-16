@@ -2,8 +2,9 @@ import { CartProductType, CartType, ProductOfACartType } from "@/lib/types/carts
 import { SliceCreator } from "@/stores/store-types";
 import { createOrUpdateCart } from "@/app/_actions/carts-actions";
 import { getIronSessionData } from "@/lib/sessions/iron-session";
+import { addOrUpdateProduct, createNewProduct, findProduct, initializeCart } from "./helpers/cart-slice-helpers";
 
-type CartSliceState = {
+export type CartSliceState = {
   cart: CartType | null;
 };
 
@@ -15,6 +16,7 @@ type CartSliceActions = {
   setQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
   updateCart: () => Promise<void>;
+  getProductQuantity: (productId: number) => number;
 };
 
 export type CartSlice = CartSliceState & CartSliceActions;
@@ -28,41 +30,14 @@ export const initialCartSliceState: CartSlice = {
   setQuantity: () => {},
   clearCart: () => {},
   updateCart: async () => {},
+  getProductQuantity: () => 0,
 };
-
-const initializeCart = (): CartType => ({
-  id: Date.now(),
-  products: [],
-  total: 0,
-  discountedTotal: 0,
-  userId: 0,
-  totalProducts: 0,
-  totalQuantity: 0,
-});
 
 export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
   ...initialCartSliceState,
   addToCart: (product) =>
     set((state) => {
-      if (!state.cart) {
-        state.cart = initializeCart();
-      }
-      const existingProduct = state.cart.products.find((p) => p.id === product.id);
-      if (existingProduct) {
-        existingProduct.quantity += product.quantity;
-      } else {
-        const newProduct: ProductOfACartType = {
-          id: product.id,
-          title: "",
-          price: 0,
-          quantity: product.quantity,
-          total: 0,
-          discountPercentage: 0,
-          discountedPrice: 0,
-          thumbnail: "",
-        };
-        state.cart.products.push(newProduct);
-      }
+      addOrUpdateProduct(state, product);
       get().updateCart();
     }),
   removeFromCart: (productId) =>
@@ -74,15 +49,20 @@ export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
     }),
   increaseQuantity: (productId) =>
     set((state) => {
-      const product = state.cart?.products.find((p) => p.id === productId);
+      if (!state.cart) {
+        state.cart = initializeCart();
+      }
+      const product = findProduct(state, productId);
       if (product) {
         product.quantity += 1;
+      } else {
+        state.cart.products.push(createNewProduct(productId, 1));
       }
       get().updateCart();
     }),
   decreaseQuantity: (productId) =>
     set((state) => {
-      const product = state.cart?.products.find((p) => p.id === productId);
+      const product = findProduct(state, productId);
       if (product) {
         if (product.quantity > 1) {
           product.quantity -= 1;
@@ -94,9 +74,14 @@ export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
     }),
   setQuantity: (productId, quantity) =>
     set((state) => {
-      const product = state.cart?.products.find((p) => p.id === productId);
+      const product = findProduct(state, productId);
       if (product) {
         product.quantity = quantity;
+      } else if (quantity > 0) {
+        if (!state.cart) {
+          state.cart = initializeCart();
+        }
+        state.cart.products.push(createNewProduct(productId, quantity));
       }
       get().updateCart();
     }),
@@ -116,5 +101,9 @@ export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
     const products = get().cart?.products || [];
     const updatedCart = await createOrUpdateCart(userId, products);
     set({ cart: updatedCart });
+  },
+  getProductQuantity: (productId) => {
+    const product = findProduct(get(), productId);
+    return product?.quantity || 0;
   },
 });

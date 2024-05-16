@@ -5,7 +5,6 @@ import { DrawerTrigger, DrawerTitle, DrawerDescription, DrawerHeader, DrawerCont
 import { Separator } from "@/components/ui/separator";
 import { ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import EmptyCart from "./EmptyCart";
 import { useShopStore } from "@/providers/store-provider";
 import CartViewProductSummaryList from "./CartViewProductSummaryList";
@@ -27,7 +26,7 @@ export default function CartViewDrawer() {
           <span className="sr-only">Cart</span>
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="min-w-96">
+      <DrawerContent className="w-full">
         {cart && cart.totalProducts > 0 ? (
           <DrawerHeader className={cn("max-w-1/2 mx-auto", !cart ? "hidden" : null)}>
             <DrawerTitle className="text-center">Your Cart</DrawerTitle>
@@ -35,7 +34,7 @@ export default function CartViewDrawer() {
           </DrawerHeader>
         ) : undefined}
 
-        <div className="max-w-1/2 mx-auto grid gap-6 p-4">
+        <div className="max-w-2xl w-full mx-auto grid gap-6 p-4">
           {cart ? (
             <>
               <CartViewProductSummaryList />

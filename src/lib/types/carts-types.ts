@@ -36,7 +36,7 @@ export type CartsOfAUserType = z.infer<typeof CartsOfAUserSchema>;
 
 export const CartProductSchema = z.object({
   id: z.number(),
-  quantity: z.number().default(1),
+  quantity: z.number().default(1).optional(),
 });
 
 export type CartProductType = z.infer<typeof CartProductSchema>;

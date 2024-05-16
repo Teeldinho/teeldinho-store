@@ -22,16 +22,10 @@ export default function CartViewProductPricing() {
         <span className="font-normal">Items</span>
         <span className="font-bold">{cart.totalQuantity}</span>
       </div>
-      <div className="flex flex-col gap-4 sm:flex-row">
-        <Button className="flex-1" size="lg" variant="outline" onClick={() => router.push("shop")}>
-          <ShoppingBag className="mr-2 size-4" />
-          Continue Shopping
-        </Button>
-        <Button className="flex-1" size="lg" onClick={() => router.push("/shop/checkout")}>
-          Proceed to Checkout
-          <ArrowRight className="ml-2 size-4" />
-        </Button>
-      </div>
+      <Button className="flex-1" size="lg" onClick={() => router.push("/shop/checkout")}>
+        Proceed to Checkout
+        <ArrowRight className="ml-2 size-4" />
+      </Button>
     </div>
   );
 }
