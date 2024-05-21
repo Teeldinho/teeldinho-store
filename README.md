@@ -27,6 +27,7 @@ Teeldinho Store is an e-commerce minimum viable product (MVP) that showcases an 
 - **Framer Motion**: Utilized for animations and enhancing user experience.
 - **Lucide React**: Included for icon components.
 - **React Hook Form**: Applied for form handling and validation.
+- **Zod Schema Validator**: Provides robust type safety and data validation across server actions and client forms, ensuring data integrity and enhancing TypeScript integration.
 - **Sonner**: Used for toast notifications.
 
 ## Key Features
@@ -115,6 +116,10 @@ By using the test card information, you can thoroughly test the payment process 
 
 ## Screenshots
 
+![Hero Page](public/hero.png)
+
+![Auth Page](public/sign.png)
+
 ![Shop Page](public/shop-page.png)
 
 ![Product Page](public/product-page.png)
@@ -126,5 +131,7 @@ By using the test card information, you can thoroughly test the payment process 
 ![Stripe Checkout Page](public/stripe-checkout.png)
 
 ![Payment Page](public/payment-page.png)
+
+![Empty Cart](public/empty.png)
 
 ![Account Dropdown](public/account.png)

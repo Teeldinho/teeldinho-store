@@ -11,19 +11,19 @@ export default function LayoutSide() {
         <div>
           <h3 className="font-semibold text-foreground mb-2">Categories</h3>
           <nav className="grid gap-2">
-            <Link className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
+            <Link aria-disabled className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
               Clothing
             </Link>
-            <Link className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
+            <Link aria-disabled className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
               Electronics
             </Link>
-            <Link className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
+            <Link aria-disabled className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
               Home & Garden
             </Link>
-            <Link className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
+            <Link aria-disabled className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
               Beauty
             </Link>
-            <Link className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
+            <Link aria-disabled className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-50" href="#">
               Sports
             </Link>
           </nav>

@@ -36,7 +36,7 @@ export const initialCartSliceState: CartSlice = {
 
 const debouncedUpdateCart = debounce(async (updateCart: () => Promise<void>) => {
   await updateCart();
-}, 1000);
+}, 500);
 
 export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
   ...initialCartSliceState,

@@ -38,6 +38,7 @@ export default function LayoutHeader({ children }: { children?: ReactElement }) 
             className="w-full  bg-background/50 shadow-none appearance-none pl-8 pr-4 py-2 rounded-md"
             placeholder="Search products..."
             type="search"
+            disabled
           />
         </div>
       </div>

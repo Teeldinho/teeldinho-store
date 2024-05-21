@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={cn("dark min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
         <ShopStoreProvider>
           {children}
-          <Toaster richColors position="bottom-center" />
+          <Toaster richColors position="top-center" />
         </ShopStoreProvider>
       </body>
     </html>
