@@ -18,7 +18,7 @@ export const createNewProduct = (productId: number, quantity: number = 1): Produ
   quantity,
   total: 0,
   discountPercentage: 0,
-  discountedPrice: 0,
+  discountedTotal: 0,
   thumbnail: "",
 });
 
