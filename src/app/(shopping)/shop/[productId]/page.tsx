@@ -4,6 +4,7 @@ import { formatToPercentage, formatToRand } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
 import { Suspense } from "react";
 import ProductDetailsActions from "./_product-details-components/ProductDetailsActions";
+import React from "react";
 
 export default async function ProductDetails({ params }: { params: { productId: string } }) {
   const { data: product } = await usingGetProductByIdQuery({ value: params.productId });
