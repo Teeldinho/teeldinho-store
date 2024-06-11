@@ -1,10 +1,8 @@
-import { usingGetProductByIdQuery } from "@/app/_actions/products-actions";
+import { usingGetProductByIdQuery } from "@/lib/actions/products-actions";
 import Image from "next/image";
 import { formatToPercentage, formatToRand } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
 import { Suspense } from "react";
-import ButtonIncreaseDecreaseQuantity from "../_shop-components/ButtonIncreaseDecreaseQuantity";
-import ButtonAddToCart from "@/components/reusable-components/ButtonAddToCart";
 import ProductDetailsActions from "./_product-details-components/ProductDetailsActions";
 
 export default async function ProductDetails({ params }: { params: { productId: string } }) {

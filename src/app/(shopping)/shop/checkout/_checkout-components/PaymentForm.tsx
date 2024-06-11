@@ -8,9 +8,9 @@ import { useShopStore } from "@/providers/store-provider";
 import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { loadStripe } from "@stripe/stripe-js";
-import { createCheckoutSession } from "@/app/_actions/carts-actions";
+import { createCheckoutSession } from "@/lib/actions/carts-actions";
 
-const SHIPPING_FEE = 150;
+export const SHIPPING_FEE = 150;
 
 const buttonTextMapping: { [key: string]: string } = {
   idle: "Place Order",
@@ -36,11 +36,15 @@ export default function PaymentForm() {
     setLoadingState("updating");
     try {
       await updateCart();
+
       setLoadingState("loadingStripe");
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string);
 
       setLoadingState("creatingSession");
+      console.log("Creating checkout session...");
       const { data: sessionId } = await createCheckoutSession(cart);
+
+      console.log("SESSION ID = ", sessionId);
 
       if (stripe && sessionId) {
         setLoadingState("redirecting");

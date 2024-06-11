@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 import { LoginSchema, LoginType } from "@/lib/types/auth-types";
-import { usingLoginMutation } from "@/app/_actions/auth-actions";
+import { usingLoginMutation } from "@/lib/actions/auth-actions";
 import ButtonSubmitForm from "@/components/reusable-components/ButtonSubmitForm";
 import { MoveRight } from "lucide-react";
 

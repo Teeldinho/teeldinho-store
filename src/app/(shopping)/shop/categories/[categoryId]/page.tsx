@@ -1,4 +1,4 @@
-import { usingGetProductsOfACategoryQuery } from "@/app/_actions/products-actions";
+import { usingGetProductsOfACategoryQuery } from "@/lib/actions/products-actions";
 import ProductCard from "../../_shop-components/ProductCard";
 
 export default async function Category({ params }: { params: { categoryId: string } }) {

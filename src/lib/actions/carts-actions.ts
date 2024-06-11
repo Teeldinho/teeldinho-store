@@ -178,11 +178,44 @@ export const createOrUpdateCart = async (userId: number, products: CartProductTy
   }
 };
 
+// export const createCheckoutSession = action(CartSchema, async ({ products }) => {
+//   const domain = getDomain();
+
+//   console.log("\n\n\n\nCreating checkout session for products", products);
+//   console.log("\n\n\n\nDomain", domain);
+
+//   const session = await stripe.checkout.sessions.create({
+//     payment_method_types: ["card"],
+//     line_items: products.map((product) => ({
+//       price_data: {
+//         currency: "zar",
+//         product_data: {
+//           name: product.title.toString(),
+//         },
+//         unit_amount: product.price * 100,
+//       },
+//       quantity: product.quantity,
+//     })),
+//     mode: "payment",
+//     success_url: `${domain}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
+//     cancel_url: `${domain}/shop/cancel`,
+//   });
+
+//   return session.id;
+// });
+
+const getsDomain = () => {
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  }
+  return process.env.NEXT_PUBLIC_DOMAIN || "http://localhost:3000";
+};
+
 export const createCheckoutSession = action(CartSchema, async ({ products }) => {
-  const domain = getDomain();
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    line_items: products.map((product) => ({
+  const domain = getsDomain();
+
+  try {
+    const lineItems = products.map((product) => ({
       price_data: {
         currency: "zar",
         product_data: {
@@ -191,11 +224,19 @@ export const createCheckoutSession = action(CartSchema, async ({ products }) => 
         unit_amount: product.price * 100,
       },
       quantity: product.quantity,
-    })),
-    mode: "payment",
-    success_url: `${domain}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${domain}/shop/cancel`,
-  });
+    }));
 
-  return session.id;
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: `${domain}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${domain}/shop/cancel`,
+    });
+
+    return session.id;
+  } catch (error) {
+    console.error("Error creating Stripe checkout session:", error);
+    throw new Error("Failed to create Stripe checkout session.");
+  }
 });

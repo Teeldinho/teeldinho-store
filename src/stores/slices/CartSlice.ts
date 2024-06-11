@@ -1,6 +1,6 @@
 import { CartProductType, CartType } from "@/lib/types/carts-types";
 import { SliceCreator } from "@/stores/store-types";
-import { createOrUpdateCart } from "@/app/_actions/carts-actions";
+import { createOrUpdateCart } from "@/lib/actions/carts-actions";
 import { getIronSessionData } from "@/lib/sessions/iron-session";
 import { addOrUpdateProduct, createNewProduct, findProduct, initializeCart } from "./helpers/cart-slice-helpers";
 import { debounce } from "lodash";
@@ -99,12 +99,14 @@ export const createCartSlice: SliceCreator<keyof CartSlice> = (set, get) => ({
     }),
   updateCart: async () => {
     const { id: userId } = await getIronSessionData();
+
     if (!userId) {
       throw new Error("User is not logged in.");
     }
 
     const products = get().cart?.products || [];
     const updatedCart = await createOrUpdateCart(userId, products);
+
     set({ cart: updatedCart });
   },
   getProductQuantity: (productId) => {

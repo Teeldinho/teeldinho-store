@@ -1,4 +1,4 @@
-import { usingGetAllProductsQuery } from "@/app/_actions/products-actions";
+import { usingGetAllProductsQuery } from "@/lib/actions/products-actions";
 import ProductCard from "./ProductCard";
 
 export default async function ProductList() {

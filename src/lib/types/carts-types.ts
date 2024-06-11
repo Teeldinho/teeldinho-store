@@ -7,7 +7,7 @@ export const ProductOfACartSchema = z.object({
   quantity: z.number(),
   total: z.number(),
   discountPercentage: z.number(),
-  discountedPrice: z.number(),
+  discountedTotal: z.number(),
   thumbnail: z.string(),
 });
 
