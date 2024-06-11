@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ShoppingBag, Squirrel } from "lucide-react";
+import { Search, Squirrel } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenuTrigger,
@@ -18,12 +18,15 @@ import dpImage from "../../../../../public/dp.jpg";
 import { ReactElement } from "react";
 import { logoutIronSession } from "@/lib/sessions/iron-session";
 import CartViewDrawer from "./CartViewDrawer";
-
-type Props = {
-  children?: ReactElement;
-};
+import { useRouter } from "next/navigation";
 
 export default function LayoutHeader({ children }: { children?: ReactElement }) {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    router.push("/login");
+    await logoutIronSession();
+  };
   return (
     <header className="bg-card border-b px-4 md:px-6 h-16 flex items-center min-w-full sticky top-0 z-50 gap-2">
       <Link className="flex items-center gap-2" href="/shop">
@@ -67,7 +70,7 @@ export default function LayoutHeader({ children }: { children?: ReactElement }) 
           <DropdownMenuItem disabled>Settings</DropdownMenuItem>
           <DropdownMenuItem disabled>Orders</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={async () => logoutIronSession()}>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
