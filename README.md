@@ -2,7 +2,7 @@
 
 Teeldinho Store is an e-commerce minimum viable product (MVP) that showcases an online store's general functionality, utilizing modern technologies and best practices for authentication, product browsing, checkout, and payment.
 
-![Shop Page](public/shop-page.png)
+![Shop Page](public/product-page-dark-mode.png)
 
 ## Project Overview
 
