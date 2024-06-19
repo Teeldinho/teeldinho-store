@@ -34,6 +34,8 @@ export const usingGetAllProductsQuery = action(EmptySchema, async () => {
 export const usingGetProductByIdQuery = action(StringValueSchema, async ({ value }) => {
   const endpoint = `${PRODUCTS_ENDPOINTS.GET.GET_PRODUCT_BY_ID.replace(":id", value)}`;
 
+  console.log("endpoint", endpoint);
+
   try {
     const response = await fetch(endpoint, {
       next: { tags: ["products"] },

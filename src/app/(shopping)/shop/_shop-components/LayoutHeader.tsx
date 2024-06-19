@@ -19,6 +19,7 @@ import { ReactElement } from "react";
 import { logoutIronSession } from "@/lib/sessions/iron-session";
 import CartViewDrawer from "./CartViewDrawer";
 import { useRouter } from "next/navigation";
+import { ThemeModeToggle } from "@/components/reusable-components/ThemeModeToggle";
 
 export default function LayoutHeader({ children }: { children?: ReactElement }) {
   const router = useRouter();
@@ -45,6 +46,8 @@ export default function LayoutHeader({ children }: { children?: ReactElement }) 
           />
         </div>
       </div>
+
+      <ThemeModeToggle />
 
       <CartViewDrawer />
 

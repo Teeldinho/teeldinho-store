@@ -18,9 +18,9 @@ export default function CartViewDrawer() {
       <DrawerTrigger asChild>
         <Button className="rounded-full" size="icon" variant="ghost">
           <div className="relative">
-            <div className="absolute size-4 flex items-center justify-center ring-1 ring-primary bg-primary text-sm rounded-full -right-1 -top-1 text-black font-bold">
+            <p className="absolute size-4 flex items-center justify-center ring-1 ring-primary bg-primary text-sm rounded-full -right-1 -top-1 text-foreground font-bold">
               {cart?.totalQuantity ?? 0}
-            </div>
+            </p>
             <ShoppingBag className="size-6 text-foreground" />
           </div>
           <span className="sr-only">Cart</span>

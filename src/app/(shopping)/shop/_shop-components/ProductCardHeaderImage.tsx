@@ -11,8 +11,8 @@ type Props = {
 
 export default function ProductCardHeaderImage({ product }: Props) {
   return (
-    <Link className="block relative group" href={`/shop/${product.id}`}>
-      <div className="absolute max-h-4 inset-0 mr-1 mt-2 z-10 flex items-center justify-end">
+    <Link className="block relative group bg-muted dark:bg-muted/40 rounded-lg" href={`/shop/${product.id}`}>
+      <div className="absolute max-h-4 inset-0 mr-2 mt-3 z-10 flex items-center justify-end">
         <Badge variant={"secondary"}>
           <Star className="size-3 mr-1" />
           {product.rating}

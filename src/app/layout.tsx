@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ShopStoreProvider } from "@/providers/store-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,12 +23,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("dark min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-        <ShopStoreProvider>
-          {children}
-          <Toaster richColors position="top-center" />
-        </ShopStoreProvider>
-      </body>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
+          <ShopStoreProvider>
+            {children}
+            <Toaster richColors position="top-center" />
+          </ShopStoreProvider>
+        </body>
+      </ThemeProvider>
     </html>
   );
 }
