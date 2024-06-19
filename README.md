@@ -120,9 +120,9 @@ By using the test card information, you can thoroughly test the payment process 
 
 ![Auth Page](public/sign.png)
 
-![Shop Page](public/shop-page.png)
+![Product Page Dark Mode](public/product-page-dark-mode.png)
 
-![Product Page](public/product-page.png)
+![Product Page Light Mode](public/product-page-light-mode.png)
 
 ![Cart Page](public/cart.png)
 
@@ -133,5 +133,7 @@ By using the test card information, you can thoroughly test the payment process 
 ![Payment Page](public/payment-page.png)
 
 ![Empty Cart](public/empty.png)
+
+![Theme Mode Toggle](public/theme-toggle.png)
 
 ![Account Dropdown](public/account.png)

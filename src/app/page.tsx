@@ -12,7 +12,7 @@ export default function Home() {
         <Suspense fallback={<div className="flex items-center justify-center flex-1 bg-background"></div>}>
           <HomePageImageSlider />
         </Suspense>
-        <div className="flex flex-col items-center justify-center space-y-4 text-center flex-1 bg-black">
+        <div className="flex flex-col items-center justify-center space-y-4 text-center flex-1 dark:bg-transparent/50">
           <h1 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl">Shop Everything</h1>
           <p className="max-w-[600px] md:text-xl text-muted-foreground">Find the perfect item for you or your loved ones.</p>
           <NavigationButton route="/login" caption="Login">
