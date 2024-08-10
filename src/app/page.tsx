@@ -4,17 +4,21 @@ import NavigationButton from "@/components/reusable-components/NavigationButton"
 import { LogIn } from "lucide-react";
 import HomePageImageSlider from "@/components/reusable-components/HomePageImageSlider";
 import { Suspense } from "react";
+import CustomSpinner from "@/components/reusable-components/CustomSpinner";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col bg-background">
       <section className="relative h-[40dvh] w-full bg-card flex">
-        <Suspense fallback={<div className="flex items-center justify-center flex-1 bg-background"></div>}>
-          <HomePageImageSlider />
-        </Suspense>
+        <div className="hidden md:block md:flex-1">
+          <Suspense fallback={<CustomSpinner />}>
+            <HomePageImageSlider />
+          </Suspense>
+        </div>
+
         <div className="flex flex-col items-center justify-center space-y-4 text-center flex-1 dark:bg-transparent/50">
           <h1 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl">Shop Everything</h1>
-          <p className="max-w-[600px] md:text-xl text-muted-foreground">Find the perfect item for you or your loved ones.</p>
+          <p className="max-w-[600px] md:text-xl text-muted-foreground">Find the perfect item.</p>
           <NavigationButton route="/login" caption="Login">
             <LogIn className="size-4 mr-2" />
           </NavigationButton>
