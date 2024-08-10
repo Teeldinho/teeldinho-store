@@ -2,11 +2,11 @@
 import "server-only";
 import { CARTS_ENDPOINTS } from "@/lib/api-endpoints/carts/carts-endpoints";
 import { ActionError, action } from "@/lib/safe-action";
-import { CartProductType, CartSchema, CartType, CreateCartSchema, CreateCartType, UpdateCartSchema, UpdateCartType } from "@/lib/types/carts-types";
+import { CartProductType, CartType, CreateCartSchema, CreateCartType, UpdateCartSchema, UpdateCartType } from "@/lib/types/carts-types";
 import { EmptySchema, StringValueSchema } from "@/lib/types/shared-types";
 import { revalidateTag } from "next/cache";
 import Stripe from "stripe";
-import { getDomain } from "@/lib/utils";
+import { headers } from "next/headers";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -178,46 +178,16 @@ export const createOrUpdateCart = async (userId: number, products: CartProductTy
   }
 };
 
-// export const createCheckoutSession = action(CartSchema, async ({ products }) => {
-//   const domain = getDomain();
+export const createCheckoutSession = async (cart: CartType) => {
+  const { products } = cart;
 
-//   console.log("\n\n\n\nCreating checkout session for products", products);
-//   console.log("\n\n\n\nDomain", domain);
-
-//   const session = await stripe.checkout.sessions.create({
-//     payment_method_types: ["card"],
-//     line_items: products.map((product) => ({
-//       price_data: {
-//         currency: "zar",
-//         product_data: {
-//           name: product.title.toString(),
-//         },
-//         unit_amount: product.price * 100,
-//       },
-//       quantity: product.quantity,
-//     })),
-//     mode: "payment",
-//     success_url: `${domain}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
-//     cancel_url: `${domain}/shop/cancel`,
-//   });
-
-//   return session.id;
-// });
-
-const getsDomain = () => {
-  if (process.env.NODE_ENV === "development") {
-    return "http://localhost:3000";
-  }
-  return process.env.NEXT_PUBLIC_DOMAIN || "http://localhost:3000";
-};
-
-export const createCheckoutSession = action(CartSchema, async ({ products }) => {
-  const domain = getsDomain();
+  const requestHeaders = headers();
+  const origin = requestHeaders.get("origin");
 
   try {
     const lineItems = products.map((product) => ({
       price_data: {
-        currency: "zar",
+        currency: "ZAR",
         product_data: {
           name: product.title.toString(),
         },
@@ -230,13 +200,13 @@ export const createCheckoutSession = action(CartSchema, async ({ products }) => 
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${domain}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${domain}/shop/cancel`,
+      success_url: `${origin}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/shop/cancel`,
     });
 
-    return session.id;
+    return { sessionId: session.id };
   } catch (error) {
     console.error("Error creating Stripe checkout session:", error);
     throw new Error("Failed to create Stripe checkout session.");
   }
-});
+};

@@ -42,7 +42,7 @@ export default function PaymentForm() {
 
       setLoadingState("creatingSession");
       console.log("Creating checkout session...");
-      const { data: sessionId } = await createCheckoutSession(cart);
+      const { sessionId } = await createCheckoutSession(cart);
 
       console.log("SESSION ID = ", sessionId);
 
